@@ -1,0 +1,13 @@
+name: 下調べ8c
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取り出す
+        uses: actions/checkout@v7
+      - name: 書き方を検査する
+        uses: astral-sh/ruff-action@0ce1b0bf8b818ef400413f810f8a11cdbda0034b  # v4.0.0
