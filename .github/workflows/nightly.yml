@@ -15,8 +15,8 @@ jobs:
           python-version: "3.13"
       - run: pip install -r requirements-dev.txt
       - run: pytest -v
-      - name: テストの件数をまとめに出す
-        uses: actions/pytest-summary@v1
+      - name: テストの一覧をまとめに書く
+        run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
     runs-on: ubuntu-latest
     steps:
