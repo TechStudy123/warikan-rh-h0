@@ -1,0 +1,17 @@
+name: テスト
+on:
+  workflow_call:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - name: Python と道具を用意する
+        uses: $/.github/actions/setup
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: テストを動かす
+        run: pytest -v
