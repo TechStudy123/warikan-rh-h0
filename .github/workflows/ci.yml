@@ -70,6 +70,7 @@ jobs:
         working-directory: scripts
         run: python build_site.py
   report:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: テストの結果を受け取る
