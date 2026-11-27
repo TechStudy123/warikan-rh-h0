@@ -28,8 +28,6 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest -v
-      - name: 少し待つ
-        run: sleep 60
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
