@@ -44,6 +44,7 @@ jobs:
         with:
           name: test-report
           path: report.xml
+          retention-days: 7
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
