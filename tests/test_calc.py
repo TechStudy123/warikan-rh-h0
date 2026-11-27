@@ -64,4 +64,4 @@ def test_多めに払う金額が合計を超えるとエラー():
 
 def test_2人で割り切れる():
     share = split(5000, 2)
-    assert share.member == 2501
+    assert share.member == 2500
