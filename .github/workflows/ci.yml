@@ -15,5 +15,7 @@ jobs:
         run: ls
       - name: Python のバージョンを表示する
         run: python --version
+      - name: 道具を入れる
+        run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest
