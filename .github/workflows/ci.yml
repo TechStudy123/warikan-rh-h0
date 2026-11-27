@@ -25,6 +25,8 @@ jobs:
       - name: 早見表を作れるか確かめる
         working-directory: scripts
         run: python build_site.py
+      - name: テストの一覧をまとめに書く
+        run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
     runs-on: ubuntu-latest
     steps:
