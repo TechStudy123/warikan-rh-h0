@@ -2,6 +2,7 @@ name: 毎朝の点検
 on:
   schedule:
     - cron: "30 8 * * *"
+      timezone: "Asia/Tokyo"
 jobs:
   test:
     runs-on: ubuntu-latest
