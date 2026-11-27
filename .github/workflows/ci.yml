@@ -10,7 +10,7 @@ jobs:
       - name: Python を用意する
         uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - name: ファイルの一覧を表示する
         run: ls
       - name: Python のバージョンを表示する
