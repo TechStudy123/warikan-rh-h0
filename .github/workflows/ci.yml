@@ -18,4 +18,4 @@ jobs:
       - name: 道具を入れる
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
-        run: pytest
+        run: pytest -v
