@@ -50,7 +50,7 @@ def split_with_extra(total: int, people: int, extra: int, unit: int = 1) -> Shar
     if extra > total:
         raise ValueError("幹事が多めに払う金額が合計を超えています")
     if people == 1:
-        return Share(member=total, organizer=total, people=1)
+        return Share(member=0, organizer=total, people=1)
 
     member = (total - extra) // people // unit * unit
     organizer = total - member * (people - 1)
