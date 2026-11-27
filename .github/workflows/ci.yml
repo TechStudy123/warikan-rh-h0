@@ -4,16 +4,28 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.count.outputs.count }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
     steps:
       - name: リポジトリを取り出す
         uses: actions/checkout@v7
       - name: Python を用意する
         uses: actions/setup-python@v7
         with:
-          python-version: "3.13"
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
       - name: ファイルの一覧を表示する
         run: ls
       - name: Python のバージョンを表示する
@@ -21,7 +33,18 @@ jobs:
       - name: 道具を入れる
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
-        run: pytest -v
+        run: pytest -v --junitxml=report.xml
+      - name: テストの件数を数える
+        id: count
+        if: matrix.python-version == '3.13'
+        run: echo "count=$(pytest --collect-only -q | grep -c '::')" >> "$GITHUB_OUTPUT"
+      - name: テストの結果を保存する
+        if: matrix.python-version == '3.13'
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: report.xml
+          retention-days: 7
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
@@ -53,3 +76,15 @@ jobs:
       - name: 早見表を作る
         working-directory: scripts
         run: python build_site.py
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: テストの結果を受け取る
+        uses: actions/download-artifact@v8
+        with:
+          name: test-report
+      - name: 受け取ったファイルを表示する
+        run: ls -l
+      - name: 件数をまとめに書く
+        run: echo "テストの件数は ${{ needs.test.outputs.count }} 件" >> "$GITHUB_STEP_SUMMARY"
