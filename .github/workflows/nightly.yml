@@ -1,7 +1,7 @@
 name: 毎朝の点検
 on:
   schedule:
-    - cron: "30 8 * * *"
+    - cron: "30 8 * * 1-5"
       timezone: "Asia/Tokyo"
   workflow_dispatch:
 jobs:
