@@ -1,20 +1,28 @@
 name: 毎朝の点検
 on:
   schedule:
-    - cron: "30 8 * * 1-5"
+    - cron: "30 8 * * 1-5"   # 平日の朝8時30分（日本時間）
       timezone: "Asia/Tokyo"
   workflow_dispatch:
+  pull_request:
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: リポジトリを取り出す
-        uses: actions/checkout@v7
-      - name: Python を用意する
-        uses: actions/setup-python@v7
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
-      - name: 道具を入れる
-        run: pip install -r requirements-dev.txt
-      - name: テストを動かす
-        run: pytest -v
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -v
+      - name: テストの一覧をまとめに書く
+        run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
