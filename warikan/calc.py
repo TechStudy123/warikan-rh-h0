@@ -52,6 +52,6 @@ def split_with_extra(total: int, people: int, extra: int, unit: int = 1) -> Shar
     if people == 1:
         return Share(member=0, organizer=total, people=1)
 
-    member = (total - extra) // people // unit * unit
+    member=(total - extra)//people//unit*unit
     organizer = total - member * (people - 1)
     return Share(member=member, organizer=organizer, people=people)
