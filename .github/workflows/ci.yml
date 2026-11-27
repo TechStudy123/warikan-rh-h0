@@ -22,6 +22,9 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest -v
+      - name: 早見表を作れるか確かめる
+        working-directory: scripts
+        run: python build_site.py
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
@@ -39,17 +42,3 @@ jobs:
         run: ruff check .
       - name: 書き方の崩れを検査する
         run: ruff format --check .
-  build:
-    needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: リポジトリを取り出す
-        uses: actions/checkout@v7
-      - name: Python を用意する
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.13"
-      - name: 早見表を作る
-        working-directory: scripts
-        run: python build_site.py
