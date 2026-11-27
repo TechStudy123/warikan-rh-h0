@@ -4,7 +4,6 @@
 割り切れない端数は幹事が払う。幹事が多めに払うこともできる。
 """
 
-import os
 from dataclasses import dataclass
 
 
