@@ -15,3 +15,11 @@ jobs:
         run: ls
       - name: Python のバージョンを表示する
         run: python --version
+      - name: 道具を入れる
+        run: pip install -r requirements-dev.txt
+      - name: 書き方を検査する
+        run: ruff check .
+      - name: 書き方の崩れを検査する
+        run: ruff format --check .
+      - name: テストを動かす
+        run: pytest -v
