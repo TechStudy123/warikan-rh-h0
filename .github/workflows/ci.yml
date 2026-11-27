@@ -17,5 +17,7 @@ jobs:
         run: python --version
       - name: 道具を入れる
         run: pip install -r requirements-dev.txt
+      - name: 書き方を検査する
+        run: ruff check .
       - name: テストを動かす
         run: pytest -v
