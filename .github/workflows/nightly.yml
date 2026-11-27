@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: "30 8 * * *"
       timezone: "Asia/Tokyo"
+  workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
