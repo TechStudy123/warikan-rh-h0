@@ -21,6 +21,9 @@ jobs:
         run: ls
       - name: Python のバージョンを表示する
         run: python --version
+      - name: わざと 3.12 だけ失敗させる
+        if: matrix.python-version == '3.12'
+        run: exit 1
       - name: 道具を入れる
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
