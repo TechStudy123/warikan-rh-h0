@@ -7,13 +7,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
     steps:
       - name: リポジトリを取り出す
         uses: actions/checkout@v7
       - name: Python を用意する
         uses: actions/setup-python@v7
         with:
-          python-version: "3.13"
+          python-version: ${{ matrix.python-version }}
       - name: ファイルの一覧を表示する
         run: ls
       - name: Python のバージョンを表示する
@@ -22,6 +25,9 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest -v
+      - name: わざと 3.12 だけ失敗させる
+        if: matrix.python-version == '3.12'
+        run: exit 1
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
