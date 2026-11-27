@@ -23,7 +23,7 @@ jobs:
       - name: テストを動かす
         run: pytest -v
   lint:
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: リポジトリを取り出す
         uses: actions/checkout@v7
