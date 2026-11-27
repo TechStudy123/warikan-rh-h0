@@ -60,3 +60,8 @@ def test_人数が0人以下はエラー(people):
 def test_多めに払う金額が合計を超えるとエラー():
     with pytest.raises(ValueError):
         split_with_extra(1000, 2, extra=2000)
+
+
+def test_2人で割り切れる():
+    share = split(5000, 2)
+    assert share.member == 2500
