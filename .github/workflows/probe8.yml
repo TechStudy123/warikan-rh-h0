@@ -6,6 +6,7 @@ permissions:
 jobs:
   show:
     runs-on: ubuntu-latest
+    environment: practice
     steps:
       - name: 変数を表示する
         run: echo "題名は ${{ vars.PAGE_TITLE }}"
@@ -13,6 +14,8 @@ jobs:
         run: echo "鍵は ${{ secrets.DUMMY_KEY }}"
   comment:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: 件数をコメントする
         env:
