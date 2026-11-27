@@ -22,6 +22,9 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest -v
+      - name: 早見表を作れるか確かめる
+        working-directory: scripts
+        run: python build_site.py
   lint:
     runs-on: ubuntu-latest
     steps:
