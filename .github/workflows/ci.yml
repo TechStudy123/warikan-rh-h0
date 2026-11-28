@@ -92,3 +92,7 @@ jobs:
         run: ls -l
       - name: 件数をまとめに書く
         run: echo "テストの件数は ${{ needs.test.outputs.count }} 件" >> $GITHUB_STEP_SUMMARY
+      - name: ページの題名を表示する
+        run: echo "ページの題名は ${{ vars.PAGE_TITLE }}"
+      - name: 鍵を表示する（確かめたら消す）
+        run: echo "鍵は ${{ secrets.DUMMY_KEY }}"
