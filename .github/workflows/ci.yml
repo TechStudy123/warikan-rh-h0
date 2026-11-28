@@ -83,6 +83,7 @@ jobs:
   report:
     needs: test
     runs-on: ubuntu-latest
+    environment: practice
     steps:
       - name: テストの結果を受け取る
         uses: actions/download-artifact@v8
