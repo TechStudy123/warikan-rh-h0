@@ -11,6 +11,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      count: ${{ steps.count.outputs.count }}
     strategy:
       fail-fast: false
       matrix:
@@ -32,12 +34,16 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest -v --junitxml=report.xml
+      - name: テストの件数を数える
+        id: count
+        run: echo "count=$(pytest --collect-only -q | grep -c '::')" >> $GITHUB_OUTPUT
       - name: テストの結果を保存する
         if: matrix.python-version == '3.13'
         uses: actions/upload-artifact@v7
         with:
           name: test-report
           path: report.xml
+          retention-days: 7
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
@@ -74,3 +80,15 @@ jobs:
         with:
           name: site
           path: site
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: テストの結果を受け取る
+        uses: actions/download-artifact@v8
+        with:
+          name: test-report
+      - name: 受け取ったファイルを表示する
+        run: ls -l
+      - name: 件数をまとめに書く
+        run: echo "テストの件数は ${{ needs.test.outputs.count }} 件" >> $GITHUB_STEP_SUMMARY
