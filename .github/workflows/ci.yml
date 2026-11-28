@@ -104,3 +104,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body "テストは ${{ needs.test.outputs.count }} 件です"
+      - name: プルリクエストの題名を表示する
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: echo "題名は $TITLE"
