@@ -22,6 +22,8 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
         run: pytest -v
+      - name: わざと失敗させる
+        run: exit 1
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
