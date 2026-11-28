@@ -74,3 +74,12 @@ jobs:
         with:
           name: site
           path: site
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: テストの結果を受け取る
+        uses: actions/download-artifact@v8
+        with:
+          name: test-report
+      - name: 受け取ったファイルを表示する
+        run: ls -l
