@@ -31,7 +31,13 @@ jobs:
       - name: 道具を入れる
         run: pip install -r requirements-dev.txt
       - name: テストを動かす
-        run: pytest -v
+        run: pytest -v --junitxml=report.xml
+      - name: テストの結果を保存する
+        if: matrix.python-version == '3.13'
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: report.xml
       - name: テストの一覧をまとめに書く
         run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
   lint:
@@ -63,3 +69,8 @@ jobs:
       - name: 早見表を作る
         working-directory: scripts
         run: python build_site.py
+      - name: 早見表を保存する
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: site
