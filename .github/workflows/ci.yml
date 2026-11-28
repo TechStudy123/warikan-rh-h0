@@ -41,6 +41,7 @@ jobs:
         run: ruff format --check .
   build:
     needs: test
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
       - name: リポジトリを取り出す
