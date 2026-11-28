@@ -41,6 +41,7 @@ jobs:
         run: ruff format --check .
   build:
     needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: リポジトリを取り出す
