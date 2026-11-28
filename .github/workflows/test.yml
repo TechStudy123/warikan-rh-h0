@@ -1,0 +1,47 @@
+name: テスト
+on:
+  workflow_call:
+    outputs:
+      count:
+        value: ${{ jobs.test.outputs.count }}
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      count: ${{ steps.count.outputs.count }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - name: リポジトリを取り出す
+        uses: actions/checkout@v7
+      - name: Python を用意する
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: ファイルの一覧を表示する
+        run: ls
+      - name: Python のバージョンを表示する
+        run: python --version
+      - name: 道具を入れる
+        run: pip install -r requirements-dev.txt
+      - name: テストを動かす
+        run: pytest -v --junitxml=report.xml
+      - name: テストの件数を数える
+        id: count
+        run: echo "count=$(pytest --collect-only -q | grep -c '::')" >> $GITHUB_OUTPUT
+      - name: テストの結果を保存する
+        if: matrix.python-version == '3.13'
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: report.xml
+          retention-days: 7
+      - name: テストの一覧をまとめに書く
+        run: pytest --collect-only -q >> $GITHUB_STEP_SUMMARY
