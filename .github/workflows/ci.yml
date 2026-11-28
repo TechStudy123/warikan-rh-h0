@@ -75,6 +75,7 @@ jobs:
           name: site
           path: site
   report:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: テストの結果を受け取る
